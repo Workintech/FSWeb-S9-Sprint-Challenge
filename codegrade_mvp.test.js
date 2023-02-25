@@ -328,7 +328,7 @@ test('AppFunctional bir fonksiyonel bileşendir.', () => {
       })
       test(`[D2 ${label}] adım sayıcı tek seferi de düzgün işledi`, () => {
         fireEvent.click(up)
-        expect(steps.textContent).toBe("1 kere")
+        expect(steps.textContent).toBe("1 kere ilerlediniz")
         fireEvent.click(up)
         expect(steps.textContent).toBe("1 kere ilerlediniz")
       })

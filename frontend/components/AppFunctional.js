@@ -1,78 +1,130 @@
-import React from 'react'
-
+import React, { useState } from "react";
+import axios from "axios";
 // önerilen başlangıç stateleri
-const initialMessage = ''
-const initialEmail = ''
-const initialSteps = 0
-const initialIndex = 4 //  "B" nin bulunduğu indexi
+// const initialMessage = "";
+// const initialEmail = "";
+// const initialSteps = 0;
+//const initialIndex = 4; //  "B" nin bulunduğu indexi
 
 export default function AppFunctional(props) {
-  // AŞAĞIDAKİ HELPERLAR SADECE ÖNERİDİR.
-  // Bunları silip kendi mantığınızla sıfırdan geliştirebilirsiniz.
-
-  function getXY() {
-    // Koordinatları izlemek için bir state e sahip olmak gerekli değildir.
-    // Bunları hesaplayabilmek için "B" nin hangi indexte olduğunu bilmek yeterlidir.
-  }
-
-  function getXYMesaj() {
-    // Kullanıcı için "Koordinatlar (2, 2)" mesajını izlemek için bir state'in olması gerekli değildir.
-    // Koordinatları almak için yukarıdaki "getXY" helperını ve ardından "getXYMesaj"ı kullanabilirsiniz.
-    // tamamen oluşturulmuş stringi döndürür.
-  }
+  //const [location, setLocation] = useState([x,y])
+  const [location, setLocation] = useState([2, 2]);
+  const [message, setMessage] = useState("");
+  const [step, setStep] = useState(0);
+  const [form, setForm] = useState("");
 
   function reset() {
-    // Tüm stateleri başlangıç ​​değerlerine sıfırlamak için bu helperı kullanın.
-  }
-
-  function sonrakiIndex(yon) {
-    // Bu helper bir yön ("sol", "yukarı", vb.) alır ve "B" nin bir sonraki indeksinin ne olduğunu hesaplar.
-    // Gridin kenarına ulaşıldığında başka gidecek yer olmadığı için,
-    // şu anki indeksi değiştirmemeli.
-  }
-
-  function ilerle(evt) {
-    // Bu event handler, "B" için yeni bir dizin elde etmek üzere yukarıdaki yardımcıyı kullanabilir,
-    // ve buna göre state i değiştirir.
+    setLocation([2, 2]);
+    setStep(0);
+    setMessage("");
   }
 
   function onChange(evt) {
     // inputun değerini güncellemek için bunu kullanabilirsiniz
+    setForm(evt.target.value);
   }
 
   function onSubmit(evt) {
+    evt.preventDefault();
     // payloadu POST etmek için bir submit handlera da ihtiyacınız var.
+    let data = {
+      x: location[0],
+      y: location[1],
+      steps: step,
+      email: form,
+    };
   }
 
+  //location[1]=2
+  function up() {
+    setMessage("");
+    //yukarı giderken x sabit kalacak. y değişken
+    if (location[1] > 1) {
+      setLocation([location[0], location[1] - 1]); //(2,1)
+      setStep(step + 1);
+    } else {
+      setMessage("You can't go up");
+    }
+  }
+
+  function right() {
+    setMessage("");
+    //x değişken y sabit
+    if (location[0] < 3) {
+      setLocation([location[0] + 1, location[1]]);
+      setStep(step + 1);
+    } else {
+      setMessage("You can't go right");
+    }
+  }
+
+  function down() {
+    setMessage("");
+    // x sabit y değişken
+    if (location[1] < 3) {
+      setLocation([location[0], location[1] + 1]);
+      setStep(step + 1);
+    } else {
+      setMessage("You can't go down");
+    }
+  }
+
+  function left() {
+    setMessage("");
+    // x değişken y sabit
+    if (location[0] > 1) {
+      setLocation([location[0] - 1, location[1]]);
+      setStep(step + 1);
+    } else {
+      setMessage("You can't go left");
+    }
+  }
+  const initialIndex = (location[1] - 1) * 3 + location[0] - 1; //ilk index=4
   return (
     <div id="wrapper" className={props.className}>
       <div className="info">
-        <h3 id="coordinates">Koordinatlar (2, 2)</h3>
-        <h3 id="steps">0 kere ilerlediniz</h3>
+        <h3 id="coordinates">Koordinatlar ({location.join(", ")})</h3>
+        <h3 id="steps">{step} kere ilerlediniz</h3>
       </div>
       <div id="grid">
-        {
-          [0, 1, 2, 3, 4, 5, 6, 7, 8].map(idx => (
-            <div key={idx} className={`square${idx === 4 ? ' active' : ''}`}>
-              {idx === 4 ? 'B' : null}
-            </div>
-          ))
-        }
+        {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((idx) => (
+          <div
+            key={idx}
+            className={`square${idx === initialIndex ? " active" : ""}`}
+          >
+            {idx === initialIndex ? "B" : null}
+          </div>
+        ))}
       </div>
       <div className="info">
-        <h3 id="message"></h3>
+        <h3 id="message">{message}</h3>
       </div>
       <div id="keypad">
-        <button id="left">SOL</button>
-        <button id="up">YUKARI</button>
-        <button id="right">SAĞ</button>
-        <button id="down">AŞAĞI</button>
-        <button id="reset">reset</button>
+        <button id="left" onClick={left}>
+          SOL
+        </button>
+        <button id="up" onClick={up}>
+          YUKARI
+        </button>
+        <button id="right" onClick={right}>
+          SAĞ
+        </button>
+        <button id="down" onClick={down}>
+          AŞAĞI
+        </button>
+        <button id="reset" onClick={reset}>
+          reset
+        </button>
       </div>
-      <form>
-        <input id="email" type="email" placeholder="email girin"></input>
+      <form onSubmit={onSubmit}>
+        <input
+          id="email"
+          type="email"
+          placeholder="email girin"
+          onChange={onChange}
+        ></input>
         <input id="submit" type="submit"></input>
       </form>
     </div>
-  )
+  );
 }

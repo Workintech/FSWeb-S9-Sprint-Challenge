@@ -79,12 +79,15 @@ export default function AppFunctional(props) {
     }
   }
 
-  function onChange(evt) {
-    // inputun değerini güncellemek için bunu kullanabilirsiniz
+  function onChangeHandler(evt) {
+  setEmail(evt.target.value);
   }
 
-  function onSubmit(evt) {
+  function onSubmitHandler(evt) {
+  evt.preventDefault();
     // payloadu POST etmek için bir submit handlera da ihtiyacınız var.
+  console.log("submit");
+  
   }
 
   return (
@@ -110,10 +113,10 @@ export default function AppFunctional(props) {
         <button onClick={ilerle} id="up">YUKARI</button>
         <button onClick={ilerle} id="right">SAĞ</button>
         <button onClick={ilerle} id="down">AŞAĞI</button>
-        <button onClick={ilerle} id="reset">reset</button>
+        <button onClick={reset} id="reset">reset</button>
       </div>
-      <form>
-        <input value={email} id="email" type="email" placeholder="email girin" onChange={(evt) => setEmail(evt.target.value)}></input>
+      <form onSubmit={onSubmitHandler}>
+        <input value={email} id="email" type="email" placeholder="email girin" onChange={onChangeHandler}></input>
         <input id="submit" type="submit"></input>
       </form>
     </div>

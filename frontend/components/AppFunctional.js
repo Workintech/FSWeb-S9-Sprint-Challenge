@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 
 // önerilen başlangıç stateleri
 const initialMessage = ''
@@ -12,6 +12,8 @@ export default function AppFunctional(props) {
   const [message, setMessage] = useState(initialMessage);
   const [email, setEmail] = useState(initialEmail);
   const [steps, setSteps] = useState(initialSteps);
+  
+  
   function getXY() {
     // Koordinatları izlemek için bir state e sahip olmak gerekli değildir.
     // Bunları hesaplayabilmek için "B" nin hangi indexte olduğunu bilmek yeterlidir.
@@ -32,28 +34,48 @@ export default function AppFunctional(props) {
     setSteps(initialSteps);
   }
 
-  function sonrakiIndex(yon) {
-    // Bu helper bir yön ("sol", "yukarı", vb.) alır ve "B" nin bir sonraki indeksinin ne olduğunu hesaplar.
-    // Gridin kenarına ulaşıldığında başka gidecek yer olmadığı için,
-    // şu anki indeksi değiştirmemeli.
+  function sonrakiIndex(targetIndex) {
+    setIndex(targetIndex);
+    setSteps(steps + 1);
+    setMessage(initialMessage);
   }
 
   function ilerle(evt) {
-    // Bu event handler, "B" için yeni bir dizin elde etmek üzere yukarıdaki yardımcıyı kullanabilir,
-    // ve buna göre state i değiştirir.
     const yon = evt.target.id;
     console.log("ilerle", yon)
-    if (yon === "left") {
-      setIndex(index - 1);
-    }
-    if (yon === "up") {
-      setIndex(index - 3);
-    }
-    if (yon === "right") {
-      setIndex(index + 1);
-    }
-    if (yon === "down") {
-      setIndex(index + 3);
+    // Bu event handler, "B" için yeni bir dizin elde etmek üzere yukarıdaki yardımcıyı kullanabilir,
+    // ve buna göre state i değiştirir.
+    switch (yon) {
+      case "left":
+        if (index % 3 === 0){
+          setMessage("Sola gidemezsiniz.");
+        } else {
+          sonrakiIndex(index - 1);
+        }
+        break;
+      case "up":
+        if (index < 3) {
+          setMessage("Yukarıya gidemezsiniz.");
+        } else {
+          sonrakiIndex(index - 3);
+        }
+        break;
+      case "right":
+        if (index % 3 === 2) {
+          setMessage("Sağa gidemezsiniz.");
+        } else {
+          sonrakiIndex(index + 1);
+        
+        }  break;
+      case "down":
+        if (index > 5) {
+          setMessage("Aşağıya gidemezsiniz.");
+        } else {
+          sonrakiIndex(index + 3);
+        break;
+        }
+        
+    
     }
   }
 

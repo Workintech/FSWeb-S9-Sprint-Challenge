@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 // önerilen başlangıç stateleri
 const initialMessage = ''
@@ -95,7 +96,16 @@ export default function AppFunctional(props) {
   evt.preventDefault();
     // payloadu POST etmek için bir submit handlera da ihtiyacınız var.
   console.log("submit");
-  
+
+  axios.post('http://localhost:9000/api/result', { "x": 1, "y": 2, "steps": 3, "email": "lady@gaga.com"
+  })
+  .then(function (response) {
+    console.log(response);
+    setMessage(response.data.message);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
   }
 
   return (

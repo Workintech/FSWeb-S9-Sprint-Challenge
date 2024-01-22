@@ -27,6 +27,8 @@ export default function AppFunctional(props) {
     // Kullanıcı için "Koordinatlar (2, 2)" mesajını izlemek için bir state'in olması gerekli değildir.
     // Koordinatları almak için yukarıdaki "getXY" helperını ve ardından "getXYMesaj"ı kullanabilirsiniz.
     // tamamen oluşturulmuş stringi döndürür.
+
+    return `Koordinatlar (${getXY()[0]}, ${getXY()[1]})`;
   }
 
   function reset() {

@@ -97,7 +97,7 @@ export default function AppFunctional(props) {
     // payloadu POST etmek için bir submit handlera da ihtiyacınız var.
   console.log("submit");
 
-  axios.post('http://localhost:9000/api/result', { "x": 1, "y": 2, "steps": 3, "email": "lady@gaga.com"
+  axios.post('http://localhost:9000/api/result', { x: getXY()[0], y: getXY()[1], steps: steps, email : email,
   })
   .then(function (response) {
     console.log(response);
@@ -105,6 +105,7 @@ export default function AppFunctional(props) {
   })
   .catch(function (error) {
     console.log(error);
+    setMessage(error.response.data.message);
   });
   }
 

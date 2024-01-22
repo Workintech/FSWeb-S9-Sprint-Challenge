@@ -55,28 +55,28 @@ export default function AppFunctional(props) {
     switch (yon) {
       case "left":
         if (index % 3 === 0){
-          setMessage("Sola gidemezsiniz.");
+          setMessage("Sola gidemezsiniz");
         } else {
           sonrakiIndex(index - 1);
         }
         break;
       case "up":
         if (index < 3) {
-          setMessage("Yukarıya gidemezsiniz.");
+          setMessage("Yukarıya gidemezsiniz");
         } else {
           sonrakiIndex(index - 3);
         }
         break;
       case "right":
         if (index % 3 === 2) {
-          setMessage("Sağa gidemezsiniz.");
+          setMessage("Sağa gidemezsiniz");
         } else {
           sonrakiIndex(index + 1);
         
         }  break;
       case "down":
         if (index > 5) {
-          setMessage("Aşağıya gidemezsiniz.");
+          setMessage("Aşağıya gidemezsiniz");
         } else {
           sonrakiIndex(index + 3);
         }
@@ -107,6 +107,8 @@ export default function AppFunctional(props) {
     console.log(error);
     setMessage(error.response.data.message);
   });
+
+  setEmail(initialEmail);
   }
 
   return (
@@ -119,7 +121,7 @@ export default function AppFunctional(props) {
         {
           [0, 1, 2, 3, 4, 5, 6, 7, 8].map(idx => (
             <div key={idx} className={`square${idx === index ? ' active' : ''}`}>
-              {idx === index ? index : idx}
+              {idx === index ? "B" : null}
             </div>
           ))
         }
